@@ -1,6 +1,6 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import {locationReducer} from '../reducers/LocationReducer';
+import locationReducer from '../reducers/LocationReducer';
 
 const rootReducer = combineReducers({
   locationReducer,

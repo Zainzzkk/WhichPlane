@@ -19,7 +19,11 @@ export const Map = () => {
     console.log('call finished');
   }, []);
   console.log('coords', coordinates);
-  if (coordinates !== undefined && coordinates.latitude !== null) {
+  if (
+    coordinates !== undefined &&
+    coordinates.latitude !== undefined &&
+    coordinates.longitude !== undefined
+  ) {
     return (
       <View style={styles.container}>
         <MapView
@@ -39,5 +43,7 @@ export const Map = () => {
         </MapView>
       </View>
     );
+  } else {
+    return null;
   }
 };
