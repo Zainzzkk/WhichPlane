@@ -1,19 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
-import {OpenSkyAPIData} from '../../actions/OpenSkyAPIData';
-import {Icon, Image} from 'native-base';
+import {useSelector, useDispatch} from 'react-redux';
+import {getLocation} from '../../actions/LocationActions';
 
 import styles from './styles';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-export const Map = ({coordinates}) => {
-  if (coordinates === undefined) {
-    return null;
-  } else {
-    OpenSkyAPIData(coordinates);
+export const Map = () => {
+  const {coordinates} = useSelector(state => state.locationReducer);
+  const dispatch = useDispatch();
+  const currentLocation = () => dispatch(getLocation());
 
+  useEffect(() => {
+    console.log('called');
+    currentLocation();
+    console.log('call finished');
+  }, []);
+  console.log('coords', coordinates);
+  if (coordinates !== undefined && coordinates.latitude !== null) {
     return (
       <View style={styles.container}>
         <MapView

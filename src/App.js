@@ -1,34 +1,16 @@
 import React from 'react';
 import {useEffect, Component} from 'react';
 
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  PermissionsAndroid,
-  Alert,
-  Platform,
-} from 'react-native';
+import {StyleSheet, useColorScheme} from 'react-native';
 
 import RNBootSplash from 'react-native-bootsplash';
-import Map from './components/Map';
-import LocationActions from './actions/LocationActions';
+import {RootNavigator} from './navigation/RootNavigator';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import * as d3 from 'd3';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-const App: () => Node = () => {
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
@@ -39,7 +21,11 @@ const App: () => Node = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  return <LocationActions />;
+  return (
+    <Provider store={store}>
+      <RootNavigator />
+    </Provider>
+  );
 };
 
 const styles = StyleSheet.create({
