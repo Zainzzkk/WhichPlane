@@ -1,33 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
-import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
-import {useSelector, useDispatch} from 'react-redux';
-import {getLocation} from '../../actions/LocationActions';
+import {View, Text} from 'react-native';
 
 import styles from './styles';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useSelector, useDispatch} from 'react-redux';
+import {getLocation, getConstantLocation} from '../../actions/LocationActions';
 
 export const Map = () => {
   const {coordinates} = useSelector(state => state.locationReducer);
   const dispatch = useDispatch();
   const currentLocation = () => dispatch(getLocation());
+  const constantLocation = () => dispatch(getConstantLocation());
 
   useEffect(() => {
-    console.log('called');
     currentLocation();
-    console.log('call finished');
+    setInterval(() => {
+      constantLocation();
+    }, 50000);
   }, []);
-  console.log('coords', coordinates);
   if (
-    coordinates !== undefined &&
     coordinates.latitude !== undefined &&
     coordinates.longitude !== undefined
   ) {
     return (
       <View style={styles.container}>
         <MapView
+          provider={PROVIDER_GOOGLE}
           style={styles.map}
+          zoomEnabled={true}
+          zoomControlEnabled={true}
           region={{
             latitude: coordinates.latitude,
             longitude: coordinates.longitude,

@@ -3,9 +3,9 @@ import {useEffect, Component} from 'react';
 
 import {StyleSheet, useColorScheme} from 'react-native';
 
-import RNBootSplash from 'react-native-bootsplash';
 import {RootNavigator} from './navigation/RootNavigator';
-import {Provider as StateProvider} from 'react-redux';
+import RNBootSplash from 'react-native-bootsplash';
+import {Provider} from 'react-redux';
 import {store} from './store/store';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -22,9 +22,9 @@ const App = () => {
   };
 
   return (
-    <StateProvider store={store}>
+    <Provider store={store}>
       <RootNavigator />
-    </StateProvider>
+    </Provider>
   );
 };
 

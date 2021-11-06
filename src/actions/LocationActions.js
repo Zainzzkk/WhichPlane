@@ -1,36 +1,34 @@
 export const GET_LOCATION = 'GET_LOCATION';
+export const GET_CONSTANT_LOCATION = 'GET_CONSTANT_LOCATION';
 
 import Geolocation from 'react-native-geolocation-service';
 
-// export const getLocation = () => {
-//     Geolocation.getCurrentPosition((position => {
-//       console.log(position.coords);
-//     }));
-// };
+export const getLocation = () => dispatch => {
+  console.log('hello');
+  Geolocation.getCurrentPosition(
+    position => {
+      dispatch({
+        type: GET_LOCATION,
+        payload: position.coords,
+      });
+    },
+    error => console.log(error.message),
+    {enableHighAccuracy: false, timeout: 20000},
+  );
+};
 
-export function getLocation() {
-  return dispatch => {
-    Geolocation.getCurrentPosition(
-      position => {
-        dispatch({
-          type: GET_LOCATION,
-          payload: position.coords,
-        });
-      },
-      error => console.log(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-    );
-  };
-}
+export const getConstantLocation = () => dispatch => {
+  console.log('constantlocationcalled');
+  Geolocation.watchPosition(
+    position => {
+      console.log('coords in const loc', position.coords);
+      dispatch({
+        type: GET_CONSTANT_LOCATION,
+        payload: position.coords,
+      });
+    },
+    error => console.log(error.message),
+    {enableHighAccuracy: false},
+  );
+};
 
-// export function getLocation() {
-//   return dispatch => {
-//     Geolocation.getCurrentPosition(position => {
-//       console.log('get position', position.coords);
-//       dispatch({
-//         type: GET_LOCATION,
-//         payload: position.coords,
-//       });
-//     });
-//   };
-// }
