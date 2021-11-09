@@ -13,7 +13,14 @@ export const getLocation = () => dispatch => {
       });
     },
     error => console.log(error.message),
-    {enableHighAccuracy: false, timeout: 20000},
+    {
+      enableHighAccuracy: false,
+      timeout: 20000,
+      accuracy: {
+        android: 'high',
+        ios: 'best',
+      },
+    },
   );
 };
 
@@ -31,4 +38,3 @@ export const getConstantLocation = () => dispatch => {
     {enableHighAccuracy: false},
   );
 };
-
