@@ -1,27 +1,34 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {getConstantLocation, getLocation} from '../actions/LocationActions';
+import {exportingcoords} from '../navigation/RootNavigator';
 
-export const ListView = () => {
-  const {coordinates} = useSelector(state => state.locationReducer);
-  const dispatch = useDispatch();
-  const currentLocation = () => dispatch(getLocation());
-  const constantLocation = () => dispatch(getConstantLocation());
+export default class ListView extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      coordinates: {latitude: null, longitude: null},
+    };
+  }
 
-  useEffect(() => {
-    currentLocation();
-    setInterval(() => {
-      constantLocation();
-    }, 50000);
-  }, []);
-  console.log('coords in list', coordinates);
-
-  return (
-    <View>
-      <Text>{coordinates.latitude}</Text>
-      <Text>{coordinates.longitude}</Text>
-    </View>
-  );
-};
+  componentDidMount() {
+    this.interval = setInterval(
+      () =>
+        this.setState({
+          coordinates: {
+            latitude: exportingcoords.coordinates.latitude,
+            longitude: exportingcoords.coordinates.longitude,
+          },
+        }),
+      2000,
+    );
+  }
+  render() {
+    return (
+      <View>
+        <Text>{this.state.coordinates.latitude}</Text>
+        <Text>{this.state.coordinates.longitude}</Text>
+      </View>
+    );
+  }
+}

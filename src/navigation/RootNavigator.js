@@ -4,13 +4,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {getLocation} from '../actions/LocationActions';
+import {getConstantLocation, getLocation} from '../actions/LocationActions';
+import {OpenSkyAPIData} from '../actions/OpenSkyAPIData';
 
-import {Map} from '../screens/Map';
-import {ListView} from '../screens/ListView';
+import Map from '../screens/Map';
+import ListView from '../screens/ListView';
 import {LoadingScreen} from '../screens/LoadingScreen';
 
 const Tab = createBottomTabNavigator();
+export let exportingcoords;
 
 const screenOptions = (route, color) => {
   let iconName;
@@ -30,6 +32,23 @@ const screenOptions = (route, color) => {
 };
 
 export const RootNavigator = () => {
+  exportingcoords = useSelector(state => state.locationReducer);
+  const dispatch = useDispatch();
+  const currentLocation = () => dispatch(getLocation());
+  const constantLocation = () => dispatch(getConstantLocation());
+
+  useEffect(() => {
+    currentLocation();
+    setInterval(() => {
+      constantLocation();
+    }, 5000);
+    setInterval(() => {
+      // console.log('export', exportingcoords.coordinates.latitude);
+      //OpenSkyAPIData({exportingcoords});
+    }, 2000);
+  }, []);
+
+
   return (
     <NavigationContainer>
       <Tab.Navigator

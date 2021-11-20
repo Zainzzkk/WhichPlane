@@ -1,7 +1,8 @@
 import {Component, useState} from 'react';
 
 export const OpenSkyAPIData = coordinates => {
-  if (coordinates === undefined) {
+  if (coordinates.latitude === undefined) {
+    console.log('null');
     return null;
   } else {
     function degree_to_radian(degrees) {
@@ -31,6 +32,7 @@ export const OpenSkyAPIData = coordinates => {
     }
 
     function getPlaneAPIData() {
+      console.log('nah I here');
       var string =
         'https://opensky-network.org/api/states/all??lamin=' +
         calc_min_lat() +
@@ -43,7 +45,7 @@ export const OpenSkyAPIData = coordinates => {
       fetch(string)
         .then(response => response.json())
         .then(data => {
-          console.log(data.states);
+          // console.log(data.states);
         });
     }
 
