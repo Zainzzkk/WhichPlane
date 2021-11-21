@@ -5,12 +5,6 @@ import styles from './styles';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {exportingcoords} from '../../navigation/RootNavigator';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {getLocation, getConstantLocation} from '../../actions/LocationActions';
-import {OpenSkyAPIData} from '../../actions/OpenSkyAPIData';
-
-// export let exportingcoords;
-
 export default class Map extends React.Component {
   constructor() {
     super();

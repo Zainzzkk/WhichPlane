@@ -1,7 +1,7 @@
 import {Component, useState} from 'react';
 
 export const OpenSkyAPIData = coordinates => {
-  if (coordinates.latitude === undefined) {
+  if (coordinates.coordinates.latitude === undefined) {
     console.log('null');
     return null;
   } else {
@@ -20,7 +20,7 @@ export const OpenSkyAPIData = coordinates => {
     function calc_max_long() {
       return (
         coordinates.longitude +
-        50 / Math.abs(Math.cos(degree_to_radian(coordinates.longitude)) * 111.2)
+        50 / Math.abs(Math.cos(degree_to_radian(coordinates.coordinates.longitude)) * 111.2)
       );
     }
 

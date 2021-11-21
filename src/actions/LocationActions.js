@@ -4,7 +4,7 @@ export const GET_CONSTANT_LOCATION = 'GET_CONSTANT_LOCATION';
 import Geolocation from 'react-native-geolocation-service';
 
 export const getLocation = () => dispatch => {
-  console.log('hello');
+  console.log('getlocationaction');
   Geolocation.getCurrentPosition(
     position => {
       dispatch({
@@ -35,6 +35,12 @@ export const getConstantLocation = () => dispatch => {
       });
     },
     error => console.log(error.message),
-    {enableHighAccuracy: false},
+    {
+      enableHighAccuracy: false,
+      accuracy: {
+        android: 'high',
+        ios: 'best',
+      },
+    },
   );
 };

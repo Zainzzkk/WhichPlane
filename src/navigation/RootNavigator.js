@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {getConstantLocation, getLocation} from '../actions/LocationActions';
-import {OpenSkyAPIData} from '../actions/OpenSkyAPIData';
+import {getOpenSkyPlaneData} from '../actions/OpenSkyAPIActions';
 
 import Map from '../screens/Map';
 import ListView from '../screens/ListView';
-import {LoadingScreen} from '../screens/LoadingScreen';
 
 const Tab = createBottomTabNavigator();
 export let exportingcoords;
+export let openSkyAPIData;
 
 const screenOptions = (route, color) => {
   let iconName;
@@ -33,21 +33,25 @@ const screenOptions = (route, color) => {
 
 export const RootNavigator = () => {
   exportingcoords = useSelector(state => state.locationReducer);
+  openSkyAPIData = useSelector(state => state.openSkyAPIReducer);
   const dispatch = useDispatch();
   const currentLocation = () => dispatch(getLocation());
   const constantLocation = () => dispatch(getConstantLocation());
+  const getOpenSkyPlanes = () =>
+    dispatch(getOpenSkyPlaneData(exportingcoords.coordinates));
 
   useEffect(() => {
     currentLocation();
     setInterval(() => {
       constantLocation();
-    }, 5000);
+    }, 10000);
     setInterval(() => {
-      // console.log('export', exportingcoords.coordinates.latitude);
-      //OpenSkyAPIData({exportingcoords});
+      if (exportingcoords) {
+        getOpenSkyPlanes();
+        console.log(openSkyAPIData);
+      }
     }, 2000);
   }, []);
-
 
   return (
     <NavigationContainer>
