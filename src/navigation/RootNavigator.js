@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector, useDispatch} from 'react-redux';
 import {getConstantLocation, getLocation} from '../actions/LocationActions';
 import {getOpenSkyPlaneData} from '../actions/OpenSkyAPIActions';
+import {mappedPlaneData} from '../actions/mappedPlaneData';
 
 import Map from '../screens/Map';
 import ListView from '../screens/ListView';
@@ -13,6 +14,7 @@ import ListView from '../screens/ListView';
 const Tab = createBottomTabNavigator();
 export let exportingcoords;
 export let openSkyAPIData;
+export let mappedData = {};
 
 const screenOptions = (route, color) => {
   let iconName;
@@ -46,9 +48,12 @@ export const RootNavigator = () => {
       constantLocation();
     }, 10000);
     setInterval(() => {
-      if (exportingcoords) {
+      if (exportingcoords.coordinates.latitude) {
         getOpenSkyPlanes();
-        console.log(openSkyAPIData);
+        if (openSkyAPIData.planes) {
+          mappedPlaneData();
+        }
+        console.log('data', mappedData);
       }
     }, 2000);
   }, []);

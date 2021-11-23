@@ -37,8 +37,8 @@ export default class Map extends React.Component {
             region={{
               latitude: this.state.coordinates.latitude,
               longitude: this.state.coordinates.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              latitudeDelta: 0.75,
+              longitudeDelta: 0.4,
             }}>
             <Marker
               coordinate={{

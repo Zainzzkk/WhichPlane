@@ -52,7 +52,6 @@ const getPlaneAPIData = coordinates => {
     return response
       .json()
       .then(data => {
-        console.log('data', data.states);
         return data.states;
       })
       .catch(err => {

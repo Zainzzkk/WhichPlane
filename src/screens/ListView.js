@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
+import {ListItem, Avatar} from 'react-native-elements';
 
-import {exportingcoords} from '../navigation/RootNavigator';
+import {openSkyAPIData} from '../navigation/RootNavigator';
 
 export default class ListView extends React.Component {
   constructor() {
     super();
     this.state = {
-      coordinates: {latitude: null, longitude: null},
+      planes: [],
     };
   }
 
@@ -15,20 +16,30 @@ export default class ListView extends React.Component {
     this.interval = setInterval(
       () =>
         this.setState({
-          coordinates: {
-            latitude: exportingcoords.coordinates.latitude,
-            longitude: exportingcoords.coordinates.longitude,
-          },
+          planes: [openSkyAPIData.planes],
         }),
       2000,
     );
   }
+  keyExtractor = (item, index) => index.toString();
+
+  renderItem = ({item}) => (
+    <ListItem bottomDivider>
+      <ListItem.Content>
+        <ListItem.Title>{item[1]}</ListItem.Title>
+      </ListItem.Content>
+      <ListItem.Chevron />
+    </ListItem>
+  );
+
   render() {
+    console.log('planes', this.state.planes[0]);
     return (
-      <View>
-        <Text>{this.state.coordinates.latitude}</Text>
-        <Text>{this.state.coordinates.longitude}</Text>
-      </View>
+      <FlatList
+        keyExtractor={this.keyExtractor}
+        data={this.state.planes[0]}
+        renderItem={this.renderItem}
+      />
     );
   }
 }
