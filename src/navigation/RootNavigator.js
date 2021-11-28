@@ -6,15 +6,15 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector, useDispatch} from 'react-redux';
 import {getConstantLocation, getLocation} from '../actions/LocationActions';
 import {getOpenSkyPlaneData} from '../actions/OpenSkyAPIActions';
-import {mappedPlaneData} from '../actions/mappedPlaneData';
 
 import Map from '../screens/Map';
 import ListView from '../screens/ListView';
 
+import {MapViewNavigator, ListViewNavigator} from '../component/navigation';
+
 const Tab = createBottomTabNavigator();
 export let exportingcoords;
 export let openSkyAPIData;
-export let mappedData = {};
 
 const screenOptions = (route, color) => {
   let iconName;
@@ -50,12 +50,9 @@ export const RootNavigator = () => {
     setInterval(() => {
       if (exportingcoords.coordinates.latitude) {
         getOpenSkyPlanes();
-        if (openSkyAPIData.planes) {
-          mappedPlaneData();
-        }
-        console.log('data', mappedData);
+        // console.log('data', openSkyAPIData.planes);
       }
-    }, 2000);
+    }, 5000);
   }, []);
 
   return (
@@ -64,10 +61,14 @@ export const RootNavigator = () => {
         screenOptions={({route}) => ({
           tabBarIcon: ({color}) => screenOptions(route, color),
         })}>
-        <Tab.Screen name="Map" component={Map} options={{headerShown: false}} />
+        <Tab.Screen
+          name="Map"
+          component={MapViewNavigator}
+          options={{headerShown: false}}
+        />
         <Tab.Screen
           name="List"
-          component={ListView}
+          component={ListViewNavigator}
           options={{headerShown: false}}
         />
       </Tab.Navigator>

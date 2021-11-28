@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
 
 import {openSkyAPIData} from '../navigation/RootNavigator';
@@ -16,28 +16,43 @@ export default class ListView extends React.Component {
     this.interval = setInterval(
       () =>
         this.setState({
-          planes: [openSkyAPIData.planes],
+          planes: openSkyAPIData.planes,
         }),
-      2000,
+      8000,
     );
   }
   keyExtractor = (item, index) => index.toString();
 
   renderItem = ({item}) => (
-    <ListItem bottomDivider>
-      <ListItem.Content>
-        <ListItem.Title>{item[1]}</ListItem.Title>
-      </ListItem.Content>
-      <ListItem.Chevron />
-    </ListItem>
+    <TouchableOpacity
+      onPress={() =>
+        this.props.navigation.navigate('PlaneInfo', {
+          item: item,
+        })
+      }>
+      <View>
+        <ListItem bottomDivider>
+          {/*<Avatar source={{uri: item.avatar_url}} />*/}
+          <ListItem.Content>
+            <ListItem.Title>{item.flightNumber}</ListItem.Title>
+            <ListItem.Title>{item.Speed}</ListItem.Title>
+            <ListItem.Title>{item.Altitude}</ListItem.Title>
+            <ListItem.Title>{item.Squawk}</ListItem.Title>
+            <ListItem.Title>{item.Type}</ListItem.Title>
+            <ListItem.Title>{item.Tail}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </View>
+    </TouchableOpacity>
   );
 
   render() {
-    console.log('planes', this.state.planes[0]);
+    console.log('planes', this.state.planes);
     return (
       <FlatList
         keyExtractor={this.keyExtractor}
-        data={this.state.planes[0]}
+        data={this.state.planes}
         renderItem={this.renderItem}
       />
     );
