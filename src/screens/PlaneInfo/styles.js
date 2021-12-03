@@ -36,8 +36,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   input: {
-    height: 75,
-    paddingVertical: 20,
+    // height: 75,
+    paddingVertical: 10,
     textAlign: 'center',
   },
   picture: {

@@ -8,7 +8,5 @@ const rootReducer = combineReducers({
   locationReducer,
   openSkyAPIReducer,
 });
-export const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk),
-);
+
+export const store = createStore(rootReducer, applyMiddleware(thunk));

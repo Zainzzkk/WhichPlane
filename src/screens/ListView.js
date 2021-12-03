@@ -18,7 +18,7 @@ export default class ListView extends React.Component {
         this.setState({
           planes: openSkyAPIData.planes,
         }),
-      8000,
+      5000,
     );
   }
   keyExtractor = (item, index) => index.toString();
@@ -48,6 +48,9 @@ export default class ListView extends React.Component {
   );
 
   render() {
+    if (this.state.planes.length === 0) {
+      return null;
+    }
     console.log('planes', this.state.planes);
     return (
       <FlatList

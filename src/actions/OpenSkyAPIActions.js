@@ -47,7 +47,7 @@ const apiData = coordinates => {
 };
 
 const getPlaneAPIData = coordinates => {
-  console.log('nah I here');
+  console.log('nah I here', coordinates);
   const string =
     'https://opensky-network.org/api/states/all??lamin=' +
     calc_min_lat(coordinates) +
@@ -75,6 +75,8 @@ const mappedPlaneData = (planeData, planes) => {
   // console.log(planeData);
   Object.keys(planeData).map(function (key, index) {
     let individualMap = {};
+    //console.log('caps', planeData[key][0]);
+    individualMap.ModeS = planeData[key][0];
     individualMap = getTail(planeData[key][0], individualMap);
     individualMap = aircraftInfo(planeData[key][0], individualMap);
     individualMap = getEachImage(planeData[key][0], individualMap);
@@ -113,7 +115,7 @@ const mappedPlaneData = (planeData, planes) => {
       individualMap.Speed = 0;
     }
     planes.push(individualMap);
-    // console.log(mappedData);
+    // console.log(individualMap);
   });
   return planes;
 };
@@ -121,6 +123,7 @@ const mappedPlaneData = (planeData, planes) => {
 const getTail = (planeData, individualMap) => {
   getTailInfo(planeData).then(tail => {
     individualMap.Tail = tail;
+    //console.log('tail', individualMap.Tail);
   });
   return individualMap;
 };
@@ -130,10 +133,15 @@ const aircraftInfo = (planeData, individualMap) => {
     if (data.status === 400) {
       return individualMap;
     }
+    //console.log(data);
     Object.keys(data).map(function (key, index) {
-      individualMap[key] = data[key];
+      //console.log('am I mapping', data);
+      if (key !== 'ModeS') {
+        individualMap[key] = data[key];
+      }
     });
   });
+  //console.log(individualMap);
   return individualMap;
 };
 
@@ -175,9 +183,20 @@ const getEachImage = (hex, individualMap) => {
     individualMap.imageLink = '';
   } else {
     getImages(hex).then(data => {
-      //console.log(data[0]);
-      individualMap.Author = data[0].photographer;
-      individualMap.imageLink = data[0].thumbnail_large.src;
+      // console.log('rawr', data[0]);
+      if (!data[0]) {
+        return individualMap;
+      }
+      if (data[0].photographer) {
+        individualMap.Author = data[0].photographer;
+      } else {
+        individualMap.Author = '';
+      }
+      if (data[0].thumbnail_large.src) {
+        individualMap.imageLink = data[0].thumbnail_large.src;
+      } else {
+        individualMap.imageLink = '';
+      }
     });
   }
   return individualMap;
@@ -188,5 +207,9 @@ const getImages = hex => {
   return fetch(string, {
     method: 'GET',
     headers: headers,
-  }).then(picture => picture.json().then(eachPicture => eachPicture.photos));
+  })
+    .then(picture => picture.json().then(eachPicture => eachPicture.photos))
+    .catch(err => {
+      console.log(err);
+    });
 };

@@ -11,6 +11,7 @@ import Map from '../screens/Map';
 import ListView from '../screens/ListView';
 
 import {MapViewNavigator, ListViewNavigator} from '../component/navigation';
+import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 export let exportingcoords;
@@ -52,7 +53,7 @@ export const RootNavigator = () => {
         getOpenSkyPlanes();
         // console.log('data', openSkyAPIData.planes);
       }
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (
